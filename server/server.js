@@ -33,6 +33,13 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  // from 21.4.3: With Express on the back end, you can define a catch-all route after your other routes with the 
+  // following code (This would mean any route that hasn't been defined would be treated as a 404 and respond with
+  // your custom 404.html file):
+  
+  // .then ( () => {
+  //   res.status(404).sendFile(path.join(__dirname, './public/404.html'))
+  // })
 });
 
 db.once('open', () => {
