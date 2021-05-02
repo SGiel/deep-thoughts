@@ -20,6 +20,19 @@ import Signup from './pages/Signup';
 // environment runs at localhost:3001. If we just used /graphl, the requests would go to localhost:3000/graphql—
 // which isn't the address for the back-end server.
 const client = new ApolloClient({
+  // instruct our Apollo instance in App.js to retrieve this token every time we make a GraphQL request.
+  request: operation => {
+    const token = localStorage.getItem('id_token');
+
+    // With this request configuration, we use the .setContext() method to set the HTTP request headers of every 
+    // request to include the token, whether the request needs it or not
+    // This is fine, since if the request doesn't need the token, our server-side resolver function won't check for it.
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    });
+  },
   // To allow this need "proxy": "http://localhost:3001", near top of package.json
   uri: '/graphql'
 });
